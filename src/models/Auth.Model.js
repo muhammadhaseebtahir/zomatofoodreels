@@ -52,9 +52,13 @@ const userSchema =new mongoose.Schema({
         type:String,
         trim:true,
     },
-    expiresAt:{
+    otpExpiresAt:{
         type:Number,
         
+    },
+    expiresAt:{
+        type:Date,
+        index: { expires: '1h' }
     }
 
 },{timestamps:true})
