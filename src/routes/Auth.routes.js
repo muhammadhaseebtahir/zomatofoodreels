@@ -2,10 +2,11 @@ const express = require("express")
 
 const router = express.Router()
 
-const {registerController}= require("../controllers/Auth.Controller")
+const {registerController,verifyOtpController}= require("../controllers/Auth.Controller")
 
 
-router.post("/register",registerController)
+router.post("/user/register",registerController)
+router.post("/user/verify-Otp",verifyOtpController)
 
 
 module.exports = router
