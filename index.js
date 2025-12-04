@@ -6,6 +6,7 @@ const bodyParser = require("body-parser")
 const userModel = require("./src/models/Auth.Model")
 
 const Auth = require("./src/routes/Auth.routes")
+const reels= require("./src/routes/foodreels.route")
 
 
 dbConnected()
@@ -43,3 +44,4 @@ app.listen(PORT,()=>{
 
 
 app.use("/auth",Auth)
+app.use("/add",reels)
