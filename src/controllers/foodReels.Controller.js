@@ -43,11 +43,14 @@ const foodAddController = async (req, res) => {
   }
 };
 
+const getFoodItemsController=async(req,res)=>{
+    const foodItems= await foodModel.find({})
+    res.status(200).json({status:"Success",message:"Food items fetch successfully.",foodItems})
+}
+    
 
-const  
 
 
 
 
-
-module.exports = { foodAddController };
+module.exports = { foodAddController,getFoodItemsController };

@@ -1,11 +1,11 @@
 const express =require("express")
 const {cloudinary,upload} = require("../services/storage.services")
 const verifyToken= require("../middlewares/Auth.Middlewares")
-const {foodAddController}= require("../controllers/foodReels.Controller")
+const {foodAddController,getFoodItemsController}= require("../controllers/foodReels.Controller")
 const router = express.Router()
 
 
-router.post("/food-reels", upload.single("video"),verifyToken,foodAddController)
-
+router.post("/add/food-reels", upload.single("video"),verifyToken,foodAddController)
+router.get("/reels",verifyToken,getFoodItemsController)
 
 module.exports= router

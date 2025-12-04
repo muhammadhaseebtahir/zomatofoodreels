@@ -44,4 +44,4 @@ app.listen(PORT,()=>{
 
 
 app.use("/auth",Auth)
-app.use("/add",reels)
+app.use("/",reels)
