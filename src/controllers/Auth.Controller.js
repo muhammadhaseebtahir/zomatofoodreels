@@ -14,7 +14,7 @@ const registerController = async (req, res) => {
   try {
     const { email, userName, password } = req.body;
 
-    if (!email || !userName || !password) {
+    if (!email || !userName || !password  ) {
       return res
         .status(400)
         .json({ success: false, message: "Please fill al the inputs." });
@@ -35,7 +35,7 @@ const registerController = async (req, res) => {
       userName,
       email,
       password: hashPassword,
-      otp,
+      otp,      
       status: "inActive",
       otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000),
     });
