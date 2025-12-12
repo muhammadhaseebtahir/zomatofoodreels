@@ -6,6 +6,6 @@ const router = express.Router()
 
 
 router.post("/add/food-reels", upload.single("video"),verifyToken(["admin","superAdmin"]),foodAddController)
-router.get("/reels",verifyToken(["user"]),verifyToken(["user","admin","superAdmin"]),getFoodItemsController)
+router.get("/reels",verifyToken(["user","admin","superAdmin"]),getFoodItemsController)
 
 module.exports= router

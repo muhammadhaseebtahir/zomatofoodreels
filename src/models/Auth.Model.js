@@ -56,6 +56,12 @@ const userSchema =new mongoose.Schema({
         type:Number,
         
     },
+    adminProfile: { // optional
+    brandName:{ type:String,required:true,trim:true},
+    phoneNo:{ type:Number,required:true,trim:true},
+    address:{ type:String,required:true,trim:true}, 
+  },
+
     expiresAt:{
         type:Date,
         index: { expires: '1h' }
