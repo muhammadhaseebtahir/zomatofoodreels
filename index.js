@@ -16,24 +16,26 @@ app.use(bodyParser.json())
 
 
 app.get("/",(req,res)=>{
-    res.send("HEllo how and i am good and  how are.")
+    res.send("Hello how and I am good and  how are.")
 })
 
 const PORT = process.env.PORT || 8000
 
-setInterval(async()=>{
-    try{
-    const oneHourAgo = new Date(Date.now()- 60 * 60 * 1000)
-    const result = await userModel.deleteMany({
-        status:"inActive",
-        expiresAt:{$lt :oneHourAgo }
-    })
-    console.log(`Cleaned up ${result.deletedCount} inactive user.`)
-    }catch(err){
-console.error('Cleanup error:', err);
-    }
+setInterval(async () => {
+  try {
+    const now = new Date();
 
-}, 60 * 60 * 1000)
+    const result = await userModel.deleteMany({
+      status: "inActive",
+      deletExtraUserTime: { $lte: now }
+    });
+
+    console.log(`Cleaned up ${result.deletedCount} inactive user(s).`);
+  } catch (err) {
+    console.error("Cleanup error:", err);
+  }
+}, 60 * 60 * 1000);
+
 
 
 

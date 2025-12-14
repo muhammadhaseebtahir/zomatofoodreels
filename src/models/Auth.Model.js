@@ -1,77 +1,75 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const userSchema =new mongoose.Schema({
-  userId:{
-    type:String,
-    trim:true,
-    required:true
-  },
-  userName:{
-  type:String,
-  required:true,
-  trim:true,
-  minlength:[3,"UserName must bee greater then 3 character."],
-  lowercase:true,
+const userSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: String,
+      trim: true,
+      required: true,
     },
-    email:{
-        type:String,
-        trim:true,
-        required:true,
-        unique:true,
-        validate:{
-            validator:(v)=>{
-                 return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/.test(v);
-            },
-            message:(props)=> `${props.value} is not a valid email!`,
-        }
+    userName: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: [3, "UserName must bee greater then 3 character."],
+      lowercase: true,
     },
-    password:{
-        type:String,
-        trim:true,
-        validate:{
-            validator:(v)=>{
-                       return /[!@#$%^&*(),.?":{}|<>]/.test(v); 
-            }, 
-             message: "Password must contain at least one special character."
-        }
+    email: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+      validate: {
+        validator: (v) => {
+          return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/.test(v);
+        },
+        message: (props) => `${props.value} is not a valid email!`,
+      },
     },
-    status:{
-        type:String,
-        default:"inActive"
+    password: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (v) => {
+          return /[!@#$%^&*(),.?":{}|<>]/.test(v);
+        },
+        message: "Password must contain at least one special character.",
+      },
     },
-    otp:{
-        type:String,
-        trim:true
+    status: {
+      type: String,
+      default: "inActive",
     },
-    role:{
-        type:String,
-        default:"user",
-        enum:["user","admin","superAdmin"],   
+    otp: {
+      type: String,
+      trim: true,
     },
-    imageUrl:{
-        type:String,
-        trim:true,
+    role: {
+      type: String,
+      default: "user",
+      enum: ["user", "admin", "superAdmin"],
     },
-    otpExpiresAt:{
-        type:Number,
-        
+    imageUrl: {
+      type: String,
+      trim: true,
     },
-    adminProfile: { // optional
-    brandName:{ type:String,required:true,trim:true},
-    phoneNo:{ type:Number,required:true,trim:true},
-    address:{ type:String,required:true,trim:true}, 
-  },
+    otpExpiresAt: {
+      type: Number,
+    },
+    adminProfile: {
+      // optional
+      brandName: { type: String,  trim: true },
+      phoneNo: { type: Number,  trim: true },
+    },
 
-    expiresAt:{
+    expiresAt: {
         type:Date,
-        index: { expires: '1h' }
-    }
+     default: () => new Date(Date.now() + 60 * 60 * 1000)
+    },
+  },
+  { timestamps: true }
+);
 
-},{timestamps:true})
+const userModel = mongoose.model("user", userSchema);
 
-
-
-const userModel = mongoose.model("user",userSchema)
-
-
-module.exports =userModel
+module.exports = userModel;

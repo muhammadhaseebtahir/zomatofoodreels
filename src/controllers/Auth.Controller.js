@@ -21,12 +21,10 @@ const registerController = async (req, res) => {
     }
     const isUserAlreadyExist = await userModel.findOne({ email });
     if (isUserAlreadyExist) {
-      return res
-        .status(409)
-        .json({
-          success: false,
-          message: "User already exists with this email.",
-        });
+      return res.status(409).json({
+        success: false,
+        message: "User already exists with this email.",
+      });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -201,12 +199,10 @@ const loginController = async (req, res) => {
         .json({ status: "error", message: "Inavalid email or password." });
     }
     if (existingUser.status == "inActive") {
-      return res
-        .status(401)
-        .json({
-          status: "error",
-          message: "Your account is inactive. Please contact support.",
-        });
+      return res.status(401).json({
+        status: "error",
+        message: "Your account is inactive. Please contact support.",
+      });
     }
     const token = jwt.sign(
       { _id: existingUser._id },
@@ -218,13 +214,11 @@ const loginController = async (req, res) => {
       .json({ status: "success", message: "Login Successfuly.", token: token });
   } catch (err) {
     console.log(`login Error ${err.message}`);
-    res
-      .status(500)
-      .json({
-        status: "error",
-        message: `Server error ${err.message}`,
-        error: err.message,
-      });
+    res.status(500).json({
+      status: "error",
+      message: `Server error ${err.message}`,
+      error: err.message,
+    });
   }
 };
 
@@ -233,20 +227,16 @@ const forgotPasswordController = async (req, res) => {
     const { email, newPassword } = req.body;
     const existingUser = await userModel.findOne({ email });
     if (!existingUser) {
-      return res
-        .status(401)
-        .josn({
-          status: "error",
-          message: "please enter valid email or password.",
-        });
+      return res.status(401).josn({
+        status: "error",
+        message: "please enter valid email or password.",
+      });
     }
     if (existingUser.status == "inActive") {
-      return res
-        .status(401)
-        .josn({
-          status: "error",
-          message: "please enter valid email or password.",
-        });
+      return res.status(401).josn({
+        status: "error",
+        message: "please enter valid email or password.",
+      });
     }
 
     const hashPassword = await bcrypt.hash(newPassword, 10);
@@ -257,13 +247,11 @@ const forgotPasswordController = async (req, res) => {
       .json({ status: "Success", message: "Password update Successfuly." });
   } catch (err) {
     console.log(`Server error ${err.message}`);
-    return res
-      .status(500)
-      .json({
-        status: "Error",
-        message: "Server error during update password.",
-        error: err.message,
-      });
+    return res.status(500).json({
+      status: "Error",
+      message: "Server error during update password.",
+      error: err.message,
+    });
   }
 };
 
@@ -291,27 +279,18 @@ const getUserController = async (req, res) => {
 
 const foodpartnerRegisterController = async (req, res) => {
   try {
-    const { email, userName, password, brandName, phoneNo, address } = req.body;
-    if (
-      !email ||
-      !userName ||
-      !password ||
-      !brandName ||
-      !phoneNo ||
-      !address
-    ) {
+    const { email, userName, password, brandName, phoneNo } = req.body;
+    if (!email || !userName || !password || !brandName || !phoneNo) {
       return res
         .status(400)
         .json({ Status: "Failed", message: "All fields are required" });
     }
     const getUser = await userModel.findOne({ email }).select("-password");
     if (getUser) {
-      return res
-        .status(409)
-        .json({
-          status: "Failed",
-          message: "User already exists with this email",
-        });
+      return res.status(409).json({
+        status: "Failed",
+        message: "User already exists with this email",
+      });
     }
     const hashPassword = await bcrypt.hash(password, 10);
 
@@ -321,11 +300,10 @@ const foodpartnerRegisterController = async (req, res) => {
       userId: randomId(),
       userName,
       email,
-      role:"admin",
+      role: "admin",
       adminProfile: {
         brandName,
-        phoneNo,
-        address,
+        phoneNo,        
       },
       password: hashPassword,
       otp,
@@ -338,7 +316,7 @@ const foodpartnerRegisterController = async (req, res) => {
       `Your verification OTP is: ${otp}. Valid for 10 minutes.`
     );
 
- if (!emailResult.success) {
+    if (!emailResult.success) {
       return res.status(500).json({
         success: false,
         message: "Failed to send OTP email",
@@ -351,8 +329,6 @@ const foodpartnerRegisterController = async (req, res) => {
       message:
         "OTP send to your email.Please verify to comlpete you registration.",
     });
-
-
   } catch (err) {
     console.log("Foodpartner error", err.message);
     return res
