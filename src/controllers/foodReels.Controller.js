@@ -45,8 +45,16 @@ const foodAddController = async (req, res) => {
 };
 
 const getFoodItemsController=async(req,res)=>{
-    const foodItems= await foodModel.find({})
-    res.status(200).json({status:"Success",message:"Food items fetch successfully.",foodItems})
+try{
+
+  
+  
+  const foodItems= await foodModel.find().populate({path: "userDetails", select: "userName email imageUrl adminProfile" }).sort({createdAt : -1})
+  res.status(200).json({status:"Success",message:"Food items fetch successfully.",foodItems})
+}catch(err){
+ console.log(err.message)
+ res.status(500).json({status:"Error", message: "Something went wrong.", error:err.message})
+}
 }
     
 
