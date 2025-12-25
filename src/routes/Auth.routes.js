@@ -15,7 +15,7 @@ const {
 
 router.post("/user/register", registerController);
 router.post("/user/verify-Otp", verifyOtpController);
-router.post("/user/resend-Otp", resendOtpController);
+router.put("/user/resend-Otp", resendOtpController);
 router.post("/user/login", loginController);
 router.put("/user/forgot-password", forgotPasswordController);
 router.get(

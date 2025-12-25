@@ -68,7 +68,8 @@ const registerController = async (req, res) => {
       success: true,
       message:
         "OTP send to your email.Please verify to comlpete you registration.",
-    });
+       email:user.email
+      });
   } catch (err) {
     console.log(`register error ${err}`);
     return res.status(500).json({
@@ -118,7 +119,7 @@ const verifyOtpController = async (req, res) => {
     storedOtp.status = "active";
     await storedOtp.save();
 
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       message: "Registration successful",
       token: token,
@@ -166,7 +167,7 @@ const resendOtpController = async (req, res) => {
     storedData.otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
     await storedData.save();
     return res
-      .status(200)
+      .status(201)
       .json({ status: "Success", message: "New otp send to your Email." });
   } catch (err) {
     console.log(`resend Otp error ${err}`);
@@ -227,15 +228,15 @@ const forgotPasswordController = async (req, res) => {
     const { email, newPassword } = req.body;
     const existingUser = await userModel.findOne({ email });
     if (!existingUser) {
-      return res.status(401).josn({
+      return res.status(401).json({
         status: "error",
         message: "please enter valid email or password.",
       });
     }
     if (existingUser.status == "inActive") {
-      return res.status(401).josn({
+      return res.status(401).json({
         status: "error",
-        message: "please enter valid email or password.",
+        message: "please enter valid email.",
       });
     }
 
@@ -243,7 +244,7 @@ const forgotPasswordController = async (req, res) => {
     existingUser.password = hashPassword;
     await existingUser.save();
     return res
-      .status(200)
+      .status(201)
       .json({ status: "Success", message: "Password update Successfuly." });
   } catch (err) {
     console.log(`Server error ${err.message}`);
@@ -258,7 +259,7 @@ const forgotPasswordController = async (req, res) => {
 const getUserController = async (req, res) => {
   const id = req._id;
   try {
-    const getUser = await userModel.findById(id).select("-password");
+    const getUser = await userModel.findById(id).select("-password -otp -otpExpiresAt ");
 
     if (getUser) {
       return res
@@ -328,6 +329,7 @@ const foodpartnerRegisterController = async (req, res) => {
       success: true,
       message:
         "OTP send to your email.Please verify to comlpete you registration.",
+        email:newPartner.email
     });
   } catch (err) {
     console.log("Foodpartner error", err.message);

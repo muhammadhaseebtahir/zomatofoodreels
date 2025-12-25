@@ -9,11 +9,17 @@ cloudinary.config({
 })
 const storage= new CloudinaryStorage({
     cloudinary: cloudinary,
-    params:{
-          folder: "zomatoreels",
-            resource_type: "video",
-            //   public_id: (req, file) => Date.now() + "-" + file.originalname
-    },
+    params:async(req,file)=>{
+         const isVideo = file.mimetype.startsWith("video/")
+         return {
+          folder:"zomatoreels",
+          resource_type: isVideo ? "video" : "image",
+          allowed_formats:isVideo?
+          ["mp4", "avi", "mov", "mkv", "webm"]:
+          ["jpg", "jpeg", "png", "gif", "webp"]
+         }
+         
+    }
 })
 
 
@@ -22,7 +28,14 @@ const upload = multer({
     storage: storage,
     limits: {
     fileSize: 100 * 1024 * 1024   // ✅ 50 MB max
-  } 
+  } ,
+  fileFilter:(req,file,cb)=>{
+    if(file.mimetype.startsWith("image/") || file.mimetype.startsWith("video/")){
+      cb(null,true)
+    }else{
+       cb(new Error("Only images and video are allowed!",false))
+    }
+  }
    
 }); 
 

@@ -62,10 +62,10 @@ const userSchema = new mongoose.Schema(
       phoneNo: { type: Number,  trim: true },
     },
 
-    expiresAt: {
-        type:Date,
-     default: () => new Date(Date.now() + 60 * 60 * 1000)
-    },
+    // expiresAt: {
+    //     type:Date,
+    //  default: () => new Date(Date.now() + 60 * 60 * 1000)
+    // },
   },
   { timestamps: true }
 );

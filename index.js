@@ -21,20 +21,20 @@ app.get("/",(req,res)=>{
 
 const PORT = process.env.PORT || 8000
 
-setInterval(async () => {
-  try {
-    const now = new Date();
+// setInterval(async () => {
+//   try {
+//     const now = new Date();
 
-    const result = await userModel.deleteMany({
-      status: "inActive",
-      deletExtraUserTime: { $lte: now }
-    });
+//     const result = await userModel.deleteMany({
+//       status: "inActive",
+//       expiresAt: { $lte: now }
+//     });
 
-    console.log(`Cleaned up ${result.deletedCount} inactive user(s).`);
-  } catch (err) {
-    console.error("Cleanup error:", err);
-  }
-}, 60 * 60 * 1000);
+//     console.log(`Cleaned up ${result.deletedCount} inactive user(s).`);
+//   } catch (err) {
+//     console.error("Cleanup error:", err);
+//   }
+// }, 60 * 60 * 1000);
 
 
 

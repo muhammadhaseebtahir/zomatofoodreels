@@ -5,7 +5,7 @@ const {foodAddController,getFoodItemsController}= require("../controllers/foodRe
 const router = express.Router()
 
 
-router.post("/add/food-reels", upload.single("video"),verifyToken(["admin","superAdmin"]),foodAddController)
+router.post("/add/food-reels", upload.single("media"),verifyToken(["admin","superAdmin"]),foodAddController)
 router.get("/reels",verifyToken(["user","admin","superAdmin"]),getFoodItemsController)
 
 module.exports= router
